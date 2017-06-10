@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>许昌分公司网管中心</title>
+
+		<!--bootstrap引用 -->
+		<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
+		<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}>
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+		<!--&lt;!&ndash;[if lt IE 9]>-->
+			<!--<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>-->
+			<!--<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>-->
+		<!--<![endif]&ndash;&gt;-->
+
+		<!--jQuery及js引用-->
+		<script src="{{url_for('static', filename='js/jquery-3.1.0.js')}}"></script>
+		<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+		<!--<script src="{{url_for('static',filename='js/query_my_js.js')}}"></script>-->
+		<script>
+			$(document).ready(function(){
+		    $('.select_tr').on('click',function(e){
+	        $(this).find('input').prop('checked','checked');
+	        $(this).siblings('.info').removeClass('info');
+	        $(this).addClass('info');
+		    });
+		    $('#btn_modal').on('click',function(e){
+	        if($('table tr td input:checked').val()==null){
+	            alert('未选择要查询的cbat！');
+	        }else{
+	            alert($('table tr td input:checked').parent().parent().children("td:eq(3)").text());
+	        };
+		    });
+			});
+		</script>
+		<script>
+			<!--$('#myModal').on('shown.bs.modal',function(){-->
+				<!--var m-olt = $('table tr td input:checked').parent().parent().children().eq(4).text();-->
+				<!--$('#m-header').val(m-olt);-->
+			<!--});-->
+		</script>
+	</head>
+	<body>
+		<!--导航条-->
+		<nav class="navbar navbar-default navbar-fixed-top">
+		  <div class="container">
+		    <!--导航标题-->
+			  <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="{{url_for('cbat_query')}}">许昌分公司Cbat管理系统</a>
+		    </div>
+			  <!--导航链接-->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li role="presentation" ><a href="#">主页</a></li>
+						<li role="presentation" class="active"><a href="{{url_for('cbat_query')}}">cbat查询</a></li>
+						<li role="presentation"><a href="#">cbat配置</a></li>
+						<li role="presentation"><a href="#">cbat监控</a></li>
+						<li role="presentation"><a href="#">cbat信息提交</a></li>
+			      <li role="presentation"><a href="#">数据库管理</a></li>
+		      </ul>
+
+		      <ul class="nav navbar-nav navbar-right">
+		        <li><a href="#">关于</a></li>
+		      </ul>
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+		</nav>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title" id="m-header"></h4>
+		      </div>
+		      <div class="modal-body">
+		        zhangxiaobo
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Save changes</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!--栅格-->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<!--表单-->
+					<form class="form-inline text-center" method="post" role="form" >
+						{{ form.hidden_tag() }}
+							{{ form.query_select.label }}{{ form.query_select(class="form-control") }}
+							{{ form.query_text(class="form-control") }}
+							{% for error in form.query_text.errors %}
+				        <span class="label label-danger">{{ error }}</span>
+				      {% endfor%}
+						{{ form.submit(class="btn btn-primary") }}
+					</form>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<div class="btn-group pull-right">
+					  <button type="button" id="btn_modal" class="btn btn-default">查询详细信息</button>
+
+					  <div class="btn-group">
+					    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					      修改Cbat信息
+					      <span class="caret"></span>
+					    </button>
+					    <ul class="dropdown-menu" role="menu">
+					      <li><a href="#">修改</a></li>
+					      <li><a href="#">删除</a></li>
+						    <li><a href="#">增加</a></li>
+					    </ul>
+						  <button type="button" class="btn btn-default">导出Cbat信息</button>
+					  </div>
+					</div>
+					<table class="table table-hover table-striped table-bordered" id="aaa">
+						<tr>
+							<th></th>
+							<th>id</th>
+							<th>分前端</th>
+							<th>cbat位置</th>
+							<th>pon口</th>
+							<th>onu mac</th>
+							<th>交换板mac</th>
+							<th>低频mac</th>
+							<th>高频mac</th>
+							<th>onu ip</th>
+							<th>交换板ip</th>
+							<th>高频ip</th>
+							<th>电源</th>
+							<th>备注</th>
+						</tr>
+						{% for iii in query_data %}
+						<tr class="select_tr">
+							<td><input type="radio" name="optionsRadios"></td>
+							{% for i in iii %}
+								{% if i == None %}
+									<td>--</td>
+								{% else %}
+									<td>{{i}}</td>
+								{% endif %}
+							{% endfor %}
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+	  <meta charset="utf-8">
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <title>许昌分公司-网管中心</title>
+
+	  <!--bootstrap引用 -->
+	  <!--bootstrap引用 -->
+	  <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+		<!--<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}">-->
+		<link rel="stylesheet" href="{{url_for('static',filename='css/mystyle.css')}}">
+		<!--jQuery及js引用-->
+		<script src="{{url_for('static', filename='js/jquery-3.1.0.js')}}"></script>
+		<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+
+	  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	  <!--[if lt IE 9]>
+	    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	  <![endif]-->
+  </head>
+	<body>
+		<!--导航条-->
+		<!--<div class="container">-->
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		  <div class="container">
+		    <!--导航标题-->
+			  <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand">许昌分公司网管中心</a>
+		    </div>
+			  <!--导航链接-->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li role="presentation"class="active"><a href="{{url_for('index')}}">主页</a></li>
+						<li role="presentation"><a href="{{url_for('test1')}}">测试一</a></li>
+						<li role="presentation"><a href="#">测试二</a></li>
+						<li role="presentation"><a href="#">测试三</a></li>
+						<li role="presentation"><a href="{{url_for('cnu')}}">cnu查询</a></li>
+			      <li role="presentation"><a href="{{url_for('rssi')}}">RSSI抑制</a></li>
+		      </ul>
+
+		      <ul class="nav navbar-nav navbar-right">
+		        <li><a href="#">关于</a></li>
+		      </ul>
+		    </div>
+		  </div>
+		</nav>
+		<!--栅格-->
+		<div class="container">
+			<div class="row">
+				<!--侧边导航-->
+				<div class="col-md-12">
+					<!--表单-->
+					<ul class="breadcrumb">
+            <li><a href="#">许昌网管中心</a></li>
+            <li class="active">主页</li>
+          </ul>
+										<table class="table table-hover table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>常用站点</th>
+								<th>网址</th>
+								<th>备注</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="http://172.30.67.204:8080/wg/login.jsp" target="_blank">网格服务化支撑系统</a></td>
+								<td>http://172.30.67.204:8080/wg/login.jsp</td>
+								<td>账号:手机号&nbsp&nbsp&nbsp密码:1</td>
+							</tr>
+							<tr>
+								<td><a href="http://172.30.64.21" target="_blank">接入认证系统</a></td>
+								<td>http://172.30.64.21</td>
+								<td>账号:姓名&nbsp&nbsp&nbsp密码:666666</td>
+							</tr>
+							<tr>
+								<td><a href="https://172.30.69.250" target="_blank">堡垒机</a></td>
+								<td>https://172.30.69.250</td>
+								<td>账号:姓名&nbsp&nbsp&nbsp密码:111111</td>
+							</tr>
+							<tr>
+								<td><a href="http://172.30.37.13/convert/index.php/Login/login" target="_blank">数字化整转分析系统</a></td>
+								<td>http://172.30.37.13/convert/index.php/Login/login</td>
+								<td>账号:许昌整转办&nbsp&nbsp&nbsp密码:2773915</td>
+							</tr>
+							<tr>
+								<td><a href="http://172.30.67.7" target="_blank">交换机流量查询</a></td>
+								<td>http://172.30.67.7</td>
+								<td>账号:catv&nbsp&nbsp&nbsp密码:catv123cisco</td>
+							</tr>
+							<tr>
+								<td><a href="http://172.30.65.145" target="_blank">工程项目管理系统-PM系统</a></td>
+								<td>http://172.30.65.145</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td><a href="https://172.30.69.250" target="_blank">运维审计系统</a></td>
+								<td>https://172.30.69.250</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td><a href="http://172.30.56.10/portal/index.jsp" target="_blank">河南有线协同办公系统</a></td>
+								<td>http://172.30.56.10/portal/index.jsp</td>
+								<td>账号:姓名&nbsp&nbsp&nbsp密码:111111</td>
+							</tr>
+							<tr>
+								<td><a href="http://172.30.54.2:99/login.jsp" target="_blank">NC系统</a></td>
+								<td>http://172.30.54.2:99/login.jsp</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td><a href="http://172.30.67.230:8080/bxwork/userLogin.do?method=userLogin" target="_blank">运行维护部费用审批系统</a></td>
+								<td>http://172.30.67.230:8080/bxwork/userLogin.do?method=userLogin</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td><a href="http://172.30.64.20" target="_blank">河南有线用户自助服务系统</a></td>
+								<td>http://172.30.64.20</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td><a href="http://172.30.56.33/login.html" target="_blank">河南有线短信平台</a></td>
+								<td>http://172.30.56.33/login.html</td>
+								<td></td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	</body>
+</html>

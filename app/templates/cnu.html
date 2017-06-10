@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>许昌分公司-网管中心</title>
+
+  <!--bootstrap引用 -->
+  <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
+	<!--<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}">-->
+	<link rel="stylesheet" href="{{url_for('static',filename='css/mystyle.css')}}">
+	<!--jQuery及js引用-->
+	<script src="{{url_for('static', filename='js/jquery-3.1.0.js')}}"></script>
+	<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+	<script>
+	$(document).ready(function(){
+		var temp_ceview = {{ceview_data | safe}}
+		var temp_wgzc = {{wgzc_data | safe}}
+		var temp_jrrz = {{jrrz_data | safe}}
+
+		//处理ceview系统获取的数据
+		//success不是timeout表示一切正常
+		if (temp_ceview.success != 'timeout'){
+			//total大于0表示查询导数据
+			if (temp_ceview.total > 0){
+				var ceview_html = ''
+				$.each(temp_ceview.records,function(i,item){
+					ceview_html = '<tr><td>分前端</td><td>'+item.group+'</td></tr>\
+									<tr><td>cbat高频模块ip</td><td>'+item.ipAddr+'</td></tr>\
+									<tr><td>cbat高频模块mac</td><td>'+item.topmac+'</td></tr>\
+									<tr><td>设备型号</td><td>'+item.devicetype+'</td></tr>\
+									<tr><td>接收rssi</td><td>'+item.recivepwl+'</td></tr>\
+									<tr><td>发送rssi</td><td>'+item.sentpwl+'</td></tr>\
+									<tr><td>衰减</td><td>'+item.attenuation+'</td></tr>\
+									<tr><td>物理带宽</td><td>'+item.phyuprate+'</td></tr>\
+									<tr><td>运行时间</td><td>'+item.runtime+'</td></tr>\
+									<tr><td>版本号</td><td>'+item.runsoftversion+'</td></tr>\
+									'
+				});
+				$("#ceview_tb").append(ceview_html);
+				$("#ceview_ps").append('链路信息数据取自ceview网管系统，如有bug或者错误请联系18623802233');
+			}
+			//total小于0表示未查询导数据
+			else{
+				$("#ceview_msg").append('<span class="label label-danger">未查询到数据</span>');
+				$("#ceview_ps").append('【未查询到数据】：ceview中无此mac的信息<br>【可能故障原因】：1、您输入的mac是否正确&nbsp&nbsp2、可能为cnu所在的cbat未登记到ceview网管系统中<br>【建议】：请刷新网页重试');
+			}
+		}
+		else{
+			$("#ceview_msg").append('<span class="label label-danger">超时或未知错误</span>');
+			$("#ceview_ps").append('【超时或未知错误】：请求ceview网管系统数据超时或者其它未知错误<br>【可能故障原因】：1、服务器在3s内未连接到ceview系统&nbsp&nbsp2、服务器网络不稳定<br>【建议】：请刷新网页重试');
+		}
+
+		//处理网格支撑系统获取的数据
+		//total数等于1，表示有数据
+		if (temp_wgzc.total == 1){
+			var wgzc_html = ''
+			$.each(temp_wgzc.data,function(i,item){
+				wgzc_html = '<tr><td>用户姓名</td><td>'+item.client_name+'</td></tr>\
+									<tr><td>证件号码</td><td>'+item.card_no+'</td></tr>\
+									<tr><td>电话</td><td>'+item.phone+'</td></tr>\
+									<tr><td>设备号码</td><td>'+item.sbhm+'</td></tr>\
+									<tr><td>业务号码</td><td>'+item.ywhm+'</td></tr>\
+									<tr><td>userid</td><td>'+item.userid+'</td></tr>\
+									<tr><td>主从机</td><td>'+item.userid+'</td></tr>\
+									<tr><td>订购产品</td><td>'+item.product_name+'</td></tr>\
+									<tr><td>融合套餐</td><td>'+item.product_rhtc+'</td></tr>\
+									<tr><td>用户状态</td><td>'+item.user_status+'</td></tr>\
+									<tr><td>业务状态</td><td>'+item.current_state+'</td></tr>\
+									<tr><td>账户状态</td><td>'+item.fee_type+'</td></tr>\
+									<tr><td>账户余额</td><td>'+item.fee_money+'</td></tr>\
+									<tr><td>用户地址</td><td>'+item.address+'</td></tr>\
+									<tr><td>入网时间</td><td>'+item.create_time+'</td></tr>\
+									'
+			});
+			$("#wgzc_tb").append(wgzc_html);
+			$("#wgzc_ps").append('用户信息数据取自网格支撑系统，如有bug或者错误请联系18623802233');
+		}
+		//total数大于1，表示有数据
+		else if (temp_wgzc.total > 1){
+			var wgzc_html = ''
+			$.each(temp_wgzc.data,function(i,item){
+				wgzc_html_tmp = '<tr><td>用户姓名</td><td>'+item.client_name+'</td></tr>\
+									<tr><td>证件号码</td><td>'+item.card_no+'</td></tr>\
+									<tr><td>电话</td><td>'+item.phone+'</td></tr>\
+									<tr><td>设备号码</td><td>'+item.sbhm+'</td></tr>\
+									<tr><td>业务号码</td><td>'+item.ywhm+'</td></tr>\
+									<tr><td>userid</td><td>'+item.userid+'</td></tr>\
+									<tr><td>主从机</td><td>'+item.userid+'</td></tr>\
+									<tr><td>订购产品</td><td>'+item.product_name+'</td></tr>\
+									<tr><td>融合套餐</td><td>'+item.product_rhtc+'</td></tr>\
+									<tr><td>用户状态</td><td>'+item.user_status+'</td></tr>\
+									<tr><td>业务状态</td><td>'+item.current_state+'</td></tr>\
+									<tr><td>账户状态</td><td>'+item.fee_type+'</td></tr>\
+									<tr><td>账户余额</td><td>'+item.fee_money+'</td></tr>\
+									<tr><td>用户地址</td><td>'+item.address+'</td></tr>\
+									<tr><td>入网时间</td><td>'+item.create_time+'</td></tr>\
+									'
+				wgzc_html = wgzc_html + wgzc_html_tmp + '<tr><td>----------</td><td>---------------------</td></tr>'
+			});
+			$("#wgzc_tb").append(wgzc_html);
+			$("#wgzc_ps").append('用户信息数据取自网格支撑系统，如有bug或者错误请联系18623802233');
+		}
+		//total数等于0，表示没有查询到数据
+		else if (temp_wgzc.total == 0){
+			$("#wgzc_msg").append('<span class="label label-danger">未查询到数据，请点击右侧按钮进行刷新</span>');
+			$("#wgzc_ps").append('【未查询到数据】：网格支撑系统中无此mac的信息<br>【可能故障原因】：1、检查输入的mac是否正确&nbsp&nbsp2、网格支撑系统数据更新较为滞后，可能当天新办理的用户信息未录入<br>【建议】：请刷新网页重试或通过其他系统查询');
+		}
+		//total数等于-1，表示登录网格支撑系统失败
+		else if (temp_wgzc.total == -1){
+			$("#wgzc_msg").append('<span class="label label-danger">登录网格支撑系统失败</span>');
+			$("#wgzc_ps").append('【登录网格支撑系统失败】：登录网格支撑系统过程中遇到问题<br>【可能故障原因】：1、可能是网格支撑系统问题<br>【建议】：请刷新网页重试');
+		}
+		//total数等于-2，表示超时或其他错误
+		else{
+			$("#wgzc_msg").append('<span class="label label-danger">超时或未知错误</span>');
+			$("#wgzc_ps").append('【超时或未知错误】：请求网格支撑系统数据超时或者其它未知错误<br>【可能故障原因】：1、服务器在3s内未连接到网格支撑系统&nbsp&nbsp2、服务器网络不稳定<br>【建议】：请刷新网页重试');
+		}
+
+		//处理接入认证系统获取的数据
+		//success为success，表示有数据
+		if (temp_jrrz.success == 'success'){
+			$.each(temp_jrrz.data,function(i,item){
+				jrrz_html = '<tr><td>mac地址</td><td>'+item.mac+'</td></tr>\
+									<tr><td>业务号码</td><td>'+item.ywhm+'</td></tr>\
+									<tr><td>userid</td><td>'+item.userid+'</td></tr>\
+									<tr><td>CCName</td><td>'+item.CCName+'</td></tr>\
+									<tr><td>业务状态</td><td>'+item.ywzt+'</td></tr>\
+									<tr><td>激活状态</td><td>'+item.jhzt+'</td></tr>\
+									<tr><td>认证状态</td><td>'+item.rzzt+'</td></tr>\
+									'
+			});
+			$("#jrrz_tb").append(jrrz_html);
+			$("#jrrz_ps").append('接入认证信息数据取自接入认证系统，如有bug或者错误请联系18623802233');
+		}
+		//success为nodata，表示没有查询到数据
+		else if (temp_jrrz.success == 'nodata'){
+			$("#jrrz_msg").append('<span class="label label-danger">未查询到数据</span>');
+			$("#jrrz_ps").append('【未查询到数据】：接入认证系统中无此mac的信息<br>【可能故障原因】：1、检查输入的mac是否正确<br>【建议】：请刷新网页重试或通过其他系统查询');
+		}
+		//success为loginerror，表示登录失败
+		else if (temp_jrrz.success == 'loginerror'){
+			$("#jrrz_msg").append('<span class="label label-danger">登录接入认证系统失败</span>');
+			$("#jrrz_ps").append('【登录接入认证系统失败】：登录接入认证系统过程中遇到问题<br>【可能故障原因】：1、可能是接入认证系统问题<br>【建议】：请刷新网页重试');
+		}
+		//success为timeout，表示超时或其他错误
+		else{
+			$("#jrrz_msg").append('<span class="label label-danger">超时或未知错误</span>');
+			$("#jrrz_ps").append('【超时或未知错误】：请求接入认证系统数据超时或者其它未知错误<br>【可能故障原因】：1、服务器在3s内未连接到接入系统&nbsp&nbsp2、服务器网络不稳定<br>【建议】：请刷新网页重试');
+		}
+	});
+</script>
+
+</head>
+<body>
+	<!--导航条-->
+	<!--<div class="container">-->
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	  <div class="container">
+			<!--导航标题-->
+		  <div class="navbar-header">
+			  <a class="navbar-brand">许昌有线-设备查询-{{cnumac}}</a>
+			</div>
+
+	  </div>
+	</nav>
+	<!--栅格-->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-primary">
+					<div id="ceview_msg" class="panel-heading">
+						链路信息
+					</div>
+					<div id="ceview_ps" class="panel-body">
+					</div>
+					 <table class="table table-bordered table-striped table-condensed">
+						<thead>
+						  <tr>
+							  <th style="width: 30%">状态</th>
+							  <th>备注</th>
+						  </tr>
+					  </thead>
+						<tbody id="ceview_tb">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-primary">
+					<div id="wgzc_msg" class="panel-heading">
+						用户信息
+					</div>
+					<div id="wgzc_ps" class="panel-body">
+					</div>
+					<table class="table table-bordered table-striped table-condensed">
+						<thead>
+						  <tr>
+							  <th style="width: 30%">状态</th>
+							  <th>备注</th>
+						  </tr>
+					  </thead>
+						<tbody id="wgzc_tb">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-primary">
+					<div id="jrrz_msg" class="panel-heading">
+						接入认证信息
+					</div>
+					<div id="jrrz_ps" class="panel-body">
+					</div>
+					<table class="table table-bordered table-striped table-condensed">
+						<thead>
+						  <tr>
+							  <th style="width: 30%">状态</th>
+							  <th>备注</th>
+						  </tr>
+					  </thead>
+						<tbody id="jrrz_tb">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

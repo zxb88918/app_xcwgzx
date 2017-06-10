@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>许昌分公司-网管中心</title>
+
+  <!--bootstrap引用 -->
+  <!--bootstrap引用 -->
+  <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+	<!--<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}">-->
+	<link rel="stylesheet" href="{{url_for('static',filename='css/mystyle.css')}}">
+	<!--jQuery及js引用-->
+	<script src="{{url_for('static', filename='js/jquery-3.1.0.js')}}"></script>
+	<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+	<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+	<style>
+		th{
+		font-size:10px;
+		}
+		td{
+		font-size:10px;
+		}
+	</style>
+	<script>
+	$(document).ready(function(){
+		$("#rssi").click(function(){
+			wocip=$("#onlywocip").text();
+			$.post("http://"+wocip+"/goform/cvn_web_setRssiSkip",{"rssienable":"0","rssiperiod":"3600","highrssi":"80","lowrssi":"20"}
+			);
+			alert("success");
+			window.location.reload();
+		});
+	});
+	</script>
+</head>
+<body>
+	<!--导航条-->
+	<!--<div class="container">-->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	  <div class="container">
+			<!--导航标题-->
+		  <div class="navbar-header">
+			  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand">许昌分公司网管中心</a>
+			</div>
+		  <!--导航链接-->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			  <ul class="nav navbar-nav">
+					<li role="presentation"><a href="{{url_for('index')}}">主页</a></li>
+					<li role="presentation"><a href="{{url_for('test1')}}">测试一</a></li>
+					<li role="presentation"><a href="#">测试二</a></li>
+					<li role="presentation"><a href="#">测试三</a></li>
+					<li role="presentation"><a href="{{url_for('cnu')}}">cnu查询</a></li>
+					<li role="presentation" class="active"><a href="{{url_for('rssi')}}">RSSI抑制</a></li>
+			  </ul>
+			  <ul class="nav navbar-nav navbar-right">
+					<li><a href="#">关于</a></li>
+			  </ul>
+			</div>
+	  </div>
+	</nav>
+	<!--栅格-->
+	<div class="container">
+		<div class="row">
+			<!--侧边导航-->
+			<div class="col-md-12">
+				<ul class="breadcrumb">
+					<li><a href="#">主页</a></li>
+					<li class="active">RSSI抑制</li>
+			  </ul>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+            <h6 class="panel-title">输入上一步查询到的cbat高频模块IP地址，查询当前cbat的rssi抑制状态</h6>
+          </div>
+					<div class="panel-body">
+						<form class="form-inline text-center" method="post" role="form" >
+							<div class="form-group">
+                <div class="input-group">
+	                {{ form.hidden_tag() }}
+	                <span class="input-group-addon">woc ip:</span>
+                  {{ form.wocip(class="form-control")}}
+                  <span class="input-group-btn">
+                    {{ form.submit(class="btn btn-primary") }}
+                  </span>
+                </div>
+              </div>
+							{% for error in form.wocip.errors %}
+				        <span class="label label-danger">{{ error }}</span>
+				      {% endfor%}
+						</form>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						RSSI抑制
+						{% if wocip %}
+							-{{wocip}}
+						{% endif %}
+					</div>
+					<div class="panel-body">
+
+						{% if rssi_data %}
+							{% if rssi_data == "1" %}
+								<form>
+									rssi抑制状态：<span class="label label-danger">{{ rssi_data }}</span>
+									<button type="button" class="btn btn-default" id="rssi">去除rssi抑制</button>
+								</form>
+							{% elif rssi_data == "0" %}
+								rssi抑制状态：<span class="label label-info">{{ rssi_data }}</span>
+							{% else %}
+								rssi抑制状态：<span class="label label-warning">{{ rssi_data }}</span>
+							{% endif %}
+						{% else %}
+							rssi抑制状态：
+						{% endif %}
+
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						终端状态
+						{% if wocip %}
+							-{{wocip}}
+						{% endif %}
+					</div>
+					<div class="panel-body">
+						{% if topo_data and topo_data[0] == ""  %}
+							<span class="label label-danger">{{ topo_data[1] }}</span>
+						{% endif %}
+						<table class="table table-striped table-hover table-bordered">
+							<thead>
+							  <tr>
+							    <th>NO</th>
+                  <th>终端mac</th>
+                  <th>设备类型</th>
+                  <th>终端状态</th>
+	                <th>端口数</th>
+                  <th>上线时间</th>
+                  <th>软件版本</th>
+	                <th>R-rssi</th>
+                  <th>T-rssi</th>
+                  <th>RxRate评分</th>
+	                <th>TxRate评分</th>
+                  <th>认证</th>
+							  </tr>
+							</thead>
+							<tbody>
+								{% if topo_data and topo_data[0] != "" %}
+							    {% for i in topo_data %}
+							    <tr>
+								    <td>{{ loop.index }}</td>
+								    <td>{{ i[0] }}</td>
+									  <td>{{ i[1] }}</td>
+								    <td>{{ i[2] }}</td>
+									  <td>{{ i[3] }}</td>
+								    <td>{{ i[4] }}</td>
+									  <td>{{ i[5] }}</td>
+								    <td>{{ i[6] }}</td>
+									  <td>{{ i[7] }}</td>
+								    <td>{{ i[8] }}</td>
+									  <td>{{ i[9] }}</td>
+								    <td>{{ i[10] }}</td>
+							    </tr>
+								  {% endfor %}
+								{% endif %}
+
+							</tbody>
+						</table>
+					</div>
+					<p id="onlywocip" style="display: none">{{wocip}}</p>
+				</div>
+		  </div>
+		</div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+	  <meta charset="utf-8">
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <title>许昌分公司-网管中心</title>
+
+	  <!--bootstrap引用 -->
+	  <!--bootstrap引用 -->
+	  <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+		<!--<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}">-->
+		<link rel="stylesheet" href="{{url_for('static',filename='css/mystyle.css')}}">
+		<!--jQuery及js引用-->
+		<script src="{{url_for('static', filename='js/jquery-3.1.0.js')}}"></script>
+		<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+
+	  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	  <!--[if lt IE 9]>
+	    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	  <![endif]-->
+  </head>
+	<body>
+		<!--导航条-->
+		<!--<div class="container">-->
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		  <div class="container">
+		    <!--导航标题-->
+			  <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand">许昌分公司网管中心</a>
+		    </div>
+			  <!--导航链接-->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li role="presentation"><a href="{{url_for('index')}}">主页</a></li>
+						<li role="presentation" class="active"><a href="{{url_for('test1')}}">测试一</a></li>
+						<li role="presentation"><a href="#">测试二</a></li>
+						<li role="presentation"><a href="#">测试三</a></li>
+						<li role="presentation"><a href="{{url_for('cnu')}}">cnu查询</a></li>
+			      <li role="presentation"><a href="{{url_for('rssi')}}">RSSI抑制</a></li>
+		      </ul>
+
+		      <ul class="nav navbar-nav navbar-right">
+		        <li><a href="#">关于</a></li>
+		      </ul>
+		    </div>
+		  </div>
+		</nav>
+		<!--栅格-->
+		<div class="container">
+			<div class="row">
+				<!--侧边导航-->
+				<div class="col-md-12">
+					<!--表单-->
+					<ul class="breadcrumb">
+            <li><a href="#">主页</a></li>
+            <li class="active">测试1</li>
+          </ul>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+              <h6 class="panel-title">mac地址查询</h6>
+            </div>
+						<div class="panel-body">
+						  <!--<form class="form-inline text-center" method="post" role="form" >-->
+			          <!--{{ form.hidden_tag() }}-->
+								<!--{{ form.fqd.label(class='control-label') }}   {{ form.fqd(class="form-control") }}-->
+								<!--{{ form.cnumac.label }}   {{ form.cnumac(class="form-control")|safe|lower }}-->
+			          <!--{{ form.submit(class="btn btn-primary btn-sm") }}-->
+								<!--{% for error in form.cnumac.errors %}-->
+					        <!--<span class="label label-danger">{{ error }}</span>-->
+					      <!--{% endfor%}-->
+							<!--</form>-->
+							<form class="form-inline text-center" method="post" role="form" >
+							<div class="form-group">
+								<!--<label class="control-label">Input addons</label>					-->
+                <div class="input-group">
+	                {{ form.hidden_tag() }}
+	                <!--<label class="input-group-addon">Input addons</label>-->
+                  <span class="input-group-addon">分前端:</span>
+	                {{ form.fqd(class="form-control") }}
+	                <span class="input-group-addon">  高频mac:</span>
+                  {{ form.cnumac(class="form-control")}}
+                  <span class="input-group-btn">
+                    {{ form.submit(class="btn btn-primary") }}
+                  </span>
+
+                </div>
+              </div>
+								{% for error in form.cnumac.errors %}
+					        <span class="label label-danger">{{ error }}</span>
+					      {% endfor%}
+							</form>
+						</div>
+					  <!--</div>-->
+					  </div>
+							<div class="panel panel-default">
+							  <div class="panel-heading">CE-VIEW信息</div>
+								<div class="panel-body">
+					    <h3><span class="label label-default">终端IP：</span> {% if ip_data != None %}{{ ip_data }}{% endif %}</h3>
+						  {% if ceview_data['mac'] != "" %}
+						    <h3><span class="label label-default">Cbat-IP:</span> {{ ceview_data['ipAddr'] }}</h3>
+							  <h3><span class="label label-default">分前端:</span> {{ ceview_data['group'] }}</h3>
+							  <h3><span class="label label-default">物理带:</span> {{ ceview_data['phydownrate'] }}</h3>
+							  <h3><span class="label label-default">接收rssi:</span> {{ ceview_data['recivepwl'] }}</h3>
+							  <h3><span class="label label-default">上线时间:</span> {{ ceview_data['runtime'] }}</h3>
+							  <h3><span class="label label-default">信道:</span> {{ ceview_data['signal'] }}</h3>
+						  {% else %}
+						     <h3><span class="label label-default">Cbat-IP：</span> </h3>
+							  <h3><span class="label label-default">分前端：</span> </h3>
+							  <h3><span class="label label-default">物理带宽：</span> </h3>
+							  <h3><span class="label label-default">接收rssi：</span> </h3>
+							  <h3><span class="label label-default">上线时间：</span> </h3>
+							  <h3><span class="label label-default">信道：</span> </h3>
+						  {% endif %}
+							</div>
+						</div>
+						<div class="panel panel-default">
+						  <div class="panel-heading">链路信息</div>
+							<div class="panel-body">
+								<table class="table table-striped table-hover table-bordered">
+									<thead>
+	                  <tr>
+	                    <th>信息</th>
+	                    <th>参数</th>
+	                    <th>备注</th>
+	                  </tr>
+	                </thead>
+	                <tbody>
+	                  <tr>
+	                    <td>Cbat-IP</td>
+	                    <td>{{ ceview_data['ipAddr'] }}</td>
+	                    <td>Column content</td>
+	                  </tr>
+	                  <tr>
+	                    <td>分前端</td>
+	                    <td>Column content</td>
+	                    <td>Column content</td>
+	                  </tr>
+	                  <tr>
+	                    <td>3</td>
+	                    <td>Column content</td>
+	                    <td>Column content</td>
+	                  </tr>
+	                  <tr>
+	                    <td>4</td>
+	                    <td>Column content</td>
+	                    <td>Column content</td>
+	                  </tr>
+	                  <tr>
+	                    <td>5</td>
+	                    <td>Column content</td>
+	                    <td>Column content</td>
+	                  </tr>
+	                  <tr>
+	                    <td id="name">6</td>
+	                    <td>Column content</td>
+	                    <td>Column content</td>
+	                  </tr>
+	                  <tr>
+	                    <td>7</td>
+	                    <td>Column content</td>
+	                    <td>Column content</td>
+	                  </tr>
+	                </tbody>
+								</table>
+							</div>
+						</div>
+
+				</div>
+			</div>
+		</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+</body>
+</html>

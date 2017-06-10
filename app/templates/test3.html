@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>许昌分公司-网管中心</title>
+
+  <!--bootstrap引用 -->
+  <!--bootstrap引用 -->
+  <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+	<!--<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}">-->
+	<link rel="stylesheet" href="{{url_for('static',filename='css/mystyle.css')}}">
+	<!--jQuery及js引用-->
+	<script src="{{url_for('static', filename='js/jquery-3.1.0.js')}}"></script>
+	<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+	<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+	<!--导航条-->
+	<!--<div class="container">-->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	  <div class="container">
+			<!--导航标题-->
+		  <div class="navbar-header">
+			  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand">许昌分公司网管中心</a>
+			</div>
+		  <!--导航链接-->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			  <ul class="nav navbar-nav">
+					<li role="presentation"><a href="{{url_for('index')}}">主页</a></li>
+					<li role="presentation"><a href="{{url_for('test1')}}">测试一</a></li>
+					<li role="presentation"><a href="#">测试二</a></li>
+					<li role="presentation"><a href="#">测试三</a></li>
+					<li role="presentation" class="active"><a href="{{url_for('cnu')}}">cnu查询</a></li>
+					<li role="presentation"><a href="{{url_for('rssi')}}">RSSI抑制</a></li>
+			  </ul>
+			  <ul class="nav navbar-nav navbar-right">
+					<li><a href="#">关于</a></li>
+			  </ul>
+			</div>
+	  </div>
+	</nav>
+	<!--栅格-->
+
+</body>
+</html>
